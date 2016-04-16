@@ -1,6 +1,8 @@
 package br.jeanderson.task;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,15 +15,17 @@ import java.net.Socket;
  */
 public class Funcao {
     private String ipServer;
+    private Context context;
 
-    public Funcao(String ipServer) {
+    public Funcao(String ipServer, Context context) {
         this.ipServer = ipServer;
+        this.context = context;
     }
 
     public void enviarMusica(final String nomeDaMusica) {
-        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+        AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
             @Override
-            protected Void doInBackground(Void... params) {
+            protected Boolean doInBackground(Void... params) {
                 try {
                     File musica = new File("/sdcard/Musicas/" + nomeDaMusica);
                     FileInputStream pegar = new FileInputStream(musica);
@@ -43,16 +47,25 @@ public class Funcao {
                     cliente.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return false;
                 }
-                return null;
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                if (!aBoolean) {
+                    Toast.makeText(context, "Não foi possivel se conectar com o servidor! verifique o IP", Toast.LENGTH_LONG).show();
+                }
             }
         }.execute();
     }
 
     public void pararMusica() {
-        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+        AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
             @Override
-            protected Void doInBackground(Void... params) {
+            protected Boolean doInBackground(Void... params) {
                 try {
                     Socket cliente = new Socket(ipServer, 8485);
                     ObjectOutputStream enviar = new ObjectOutputStream(cliente.getOutputStream());
@@ -62,16 +75,25 @@ public class Funcao {
                     cliente.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return false;
                 }
-                return null;
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                if (!aBoolean) {
+                    Toast.makeText(context, "Não foi possivel se conectar com o servidor! verifique o IP", Toast.LENGTH_LONG).show();
+                }
             }
         }.execute();
     }
 
     public void aumentarVolume() {
-        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+        AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
             @Override
-            protected Void doInBackground(Void... params) {
+            protected Boolean doInBackground(Void... params) {
                 try {
                     Socket cliente = new Socket(ipServer, 8485);
                     ObjectOutputStream enviar = new ObjectOutputStream(cliente.getOutputStream());
@@ -81,16 +103,25 @@ public class Funcao {
                     cliente.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return false;
                 }
-                return null;
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                if (!aBoolean) {
+                    Toast.makeText(context, "Não foi possivel se conectar com o servidor! verifique o IP", Toast.LENGTH_LONG).show();
+                }
             }
         }.execute();
     }
 
     public void diminuirVolume() {
-        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+        AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
             @Override
-            protected Void doInBackground(Void... params) {
+            protected Boolean doInBackground(Void... params) {
                 try {
                     Socket cliente = new Socket(ipServer, 8485);
                     ObjectOutputStream enviar = new ObjectOutputStream(cliente.getOutputStream());
@@ -100,8 +131,17 @@ public class Funcao {
                     cliente.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return false;
                 }
-                return null;
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                if (!aBoolean) {
+                    Toast.makeText(context, "Não foi possivel se conectar com o servidor! verifique o IP", Toast.LENGTH_LONG).show();
+                }
             }
         }.execute();
     }

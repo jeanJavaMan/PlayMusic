@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:text="Informe o IP do programa"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black"
@@ -18,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textInput"
-        android:layout_below="@+id/textView">
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="10dp">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"

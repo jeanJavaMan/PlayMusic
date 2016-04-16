@@ -21,7 +21,7 @@ public class ConfigBanco extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE IF NOT EXISTS "+TABELA+" ("+IP+" string)";
+        String sql = "CREATE TABLE IF NOT EXISTS "+TABELA+" ("+IP+" STRING);";
         db.execSQL(sql);
     }
 

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 /**
  * Created by jeand on 16/04/2016.
@@ -24,22 +25,25 @@ public class Configuracao {
      * @return - retorna o IP em formato String.
      * @throws - Caso não acha um IP no Banco retorna a exceção NullPointerException.
      */
-    public String getIpServer() {
+    public String getIpServer() throws NullPointerException {
         db = configBanco.getReadableDatabase();
         String[] coluna = {ConfigBanco.IP};
         Cursor cursor = db.query(ConfigBanco.TABELA, coluna, null, null, null, null, null);
-        db.close();
+        Log.i("Count: ",""+cursor.getCount());
         if (cursor.getCount() <= 0) {
-            db.close();
             cursor.close();
+            db.close();
+            Log.i("Excecao","Chegou nela");
             throw new NullPointerException();
         } else {
             cursor.moveToFirst();
             cursor.moveToPosition(cursor.getColumnIndexOrThrow(ConfigBanco.IP));
             String ipServer = cursor.getString(cursor.getColumnIndexOrThrow(ConfigBanco.IP));
             cursor.close();
+            db.close();
             return ipServer;
         }
+
     }
 
     /**

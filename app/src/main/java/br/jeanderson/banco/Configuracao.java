@@ -33,7 +33,6 @@ public class Configuracao {
         if (cursor.getCount() <= 0) {
             cursor.close();
             db.close();
-            Log.i("Excecao","Chegou nela");
             throw new NullPointerException();
         } else {
             cursor.moveToFirst();
@@ -59,7 +58,6 @@ public class Configuracao {
             String ip = getIpServer();
             existe = true;
         } catch (NullPointerException ex) {
-            ex.printStackTrace();
             existe = false;
         }
         ContentValues valores = new ContentValues();

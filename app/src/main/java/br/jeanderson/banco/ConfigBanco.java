@@ -21,13 +21,14 @@ public class ConfigBanco extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE "+TABELA+" ("+IP+" string)";
+        String sql = "CREATE TABLE IF NOT EXISTS "+TABELA+" ("+IP+" string)";
         db.execSQL(sql);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE " + TABELA;
+        String sql = "DROP TABLE IF EXISTS " + TABELA;
         db.execSQL(sql);
+        onCreate(db);
     }
 }

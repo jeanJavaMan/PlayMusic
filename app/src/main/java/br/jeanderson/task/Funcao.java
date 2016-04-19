@@ -16,6 +16,11 @@ import java.net.Socket;
 public class Funcao {
     private String ipServer;
     private Context context;
+    private final int TOCAR_MUSICA = 1;
+    private final int PARAR_MUSICA = 2;
+    private final int AUMENTAR_VOLUME = 3;
+    private final int DIMINUIR_VOLUME = 4;
+    private final int BUFFER_LIMIT = 4096;
 
     public Funcao(String ipServer, Context context) {
         this.ipServer = ipServer;
@@ -31,9 +36,10 @@ public class Funcao {
                     FileInputStream pegar = new FileInputStream(musica);
                     Socket cliente = new Socket(ipServer, 8485);
                     ObjectOutputStream enviar = new ObjectOutputStream(cliente.getOutputStream());
-                    enviar.writeInt(1);
+                    enviar.writeInt(TOCAR_MUSICA);
                     enviar.flush();
-                    byte[] buf = new byte[4096];
+                    enviar.writeUTF(nomeDaMusica);
+                    byte[] buf = new byte[BUFFER_LIMIT];
                     while (true) {
                         int len = pegar.read(buf);
                         if (len == -1) {
@@ -69,7 +75,7 @@ public class Funcao {
                 try {
                     Socket cliente = new Socket(ipServer, 8485);
                     ObjectOutputStream enviar = new ObjectOutputStream(cliente.getOutputStream());
-                    enviar.writeInt(2);
+                    enviar.writeInt(PARAR_MUSICA);
                     enviar.flush();
                     enviar.close();
                     cliente.close();
@@ -97,7 +103,7 @@ public class Funcao {
                 try {
                     Socket cliente = new Socket(ipServer, 8485);
                     ObjectOutputStream enviar = new ObjectOutputStream(cliente.getOutputStream());
-                    enviar.writeInt(3);
+                    enviar.writeInt(AUMENTAR_VOLUME);
                     enviar.flush();
                     enviar.close();
                     cliente.close();
@@ -125,7 +131,7 @@ public class Funcao {
                 try {
                     Socket cliente = new Socket(ipServer, 8485);
                     ObjectOutputStream enviar = new ObjectOutputStream(cliente.getOutputStream());
-                    enviar.writeInt(4);
+                    enviar.writeInt(DIMINUIR_VOLUME);
                     enviar.flush();
                     enviar.close();
                     cliente.close();

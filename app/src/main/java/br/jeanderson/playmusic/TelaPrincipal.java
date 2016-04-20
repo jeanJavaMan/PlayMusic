@@ -26,7 +26,7 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
         StrictMode.setThreadPolicy(policy);
         this.btnMusic = (Button) findViewById(R.id.btnMusic);
         this.btnConfig = (Button) findViewById(R.id.btnConfig);
-        telaPrincipal = (RelativeLayout) findViewById(R.id.TelaPrincipal);
+        telaPrincipal = (RelativeLayout) findViewById(R.id.TelaInicial);
         btnMusic.setOnClickListener(this);
         btnConfig.setOnClickListener(this);
         this.dialogIP = new DialogIP(this);

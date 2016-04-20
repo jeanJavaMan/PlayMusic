@@ -3,12 +3,14 @@ package br.jeanderson.playmusic;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -22,9 +24,10 @@ public class TelaMusic extends AppCompatActivity implements AdapterView.OnItemCl
     private TextView txtTocando;
     private Button btnParar, btnAumentar, btnDiminuir;
     private ListView lvMusicas;
+    private SeekBar sbProgresso;
     private ListaTask task;
     private Funcao funcao;
-    private int contador;
+    private int volumeCount = 20;
     private RelativeLayout telaMusicas;
     private Configuracao config;
 
@@ -32,12 +35,8 @@ public class TelaMusic extends AppCompatActivity implements AdapterView.OnItemCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_music);
-        this.txtTocando = (TextView) findViewById(R.id.txtTocando);
-        this.btnAumentar = (Button) findViewById(R.id.btnAumentar);
-        this.btnDiminuir = (Button) findViewById(R.id.btnDiminuir);
-        this.btnParar = (Button) findViewById(R.id.btnParar);
-        this.lvMusicas = (ListView) findViewById(R.id.lvMusicas);
-        this.telaMusicas = (RelativeLayout) findViewById(R.id.TelaMusicas);
+        inicializarComponentes();
+
         this.lvMusicas.setOnItemClickListener(this);
         this.task = new ListaTask(lvMusicas, this);
         this.task.execute();
@@ -55,6 +54,51 @@ public class TelaMusic extends AppCompatActivity implements AdapterView.OnItemCl
             Snackbar.make(lvMusicas, "Nenhum IP configurado, por favor configure um IP antes!", Snackbar.LENGTH_LONG).show();
         }
         Glide.with(this).load(R.drawable.iurd_fundo).asBitmap().into(new GlideTarget(this,telaMusicas));
+        sbProgresso.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.i("Progresso",""+progress);
+                if(volumeCount < progress){
+                    funcao.diminuirVolume();
+                }else if(volumeCount > progress){
+                    funcao.aumentarVolume();
+                }
+                volumeCount = progress;
+                if (volumeCount == 20) {
+                    btnAumentar.setEnabled(false);
+                }
+                if (volumeCount == 1) {
+                    btnDiminuir.setEnabled(true);
+                }
+                if (volumeCount == 0) {
+                    btnDiminuir.setEnabled(false);
+                }
+                if (volumeCount == 19) {
+                    btnAumentar.setEnabled(true);
+                }
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //sem necessidade
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //sem necessidade
+            }
+        });
+    }
+
+    private void inicializarComponentes() {
+        this.txtTocando = (TextView) findViewById(R.id.txtTocando);
+        this.btnAumentar = (Button) findViewById(R.id.btnAumentar);
+        this.btnDiminuir = (Button) findViewById(R.id.btnDiminuir);
+        this.btnParar = (Button) findViewById(R.id.btnParar);
+        this.lvMusicas = (ListView) findViewById(R.id.lvMusicas);
+        this.telaMusicas = (RelativeLayout) findViewById(R.id.TelaMusicas);
+        this.sbProgresso = (SeekBar) findViewById(R.id.sbProgresso);
     }
 
     @Override
@@ -65,7 +109,6 @@ public class TelaMusic extends AppCompatActivity implements AdapterView.OnItemCl
             this.txtTocando.setText(nomeDamusica);
             if (!btnParar.isEnabled()) {
                 btnParar.setEnabled(true);
-                btnAumentar.setEnabled(true);
                 btnDiminuir.setEnabled(true);
             }
         }else{
@@ -82,24 +125,28 @@ public class TelaMusic extends AppCompatActivity implements AdapterView.OnItemCl
             btnDiminuir.setEnabled(false);
             txtTocando.setText("Nada");
         } else if (v.getId() == R.id.btnAumentar) {
-            contador++;
+            volumeCount++;
+            sbProgresso.setProgress(volumeCount);
             funcao.aumentarVolume();
-            if (contador == 5) {
+            if (volumeCount == 20) {
                 btnAumentar.setEnabled(false);
             }
-            if (contador == 1) {
+            if (volumeCount == 1) {
                 btnDiminuir.setEnabled(true);
             }
 
         } else if (v.getId() == R.id.btnDiminuir) {
-            contador--;
+            volumeCount--;
+            sbProgresso.setProgress(volumeCount);
             funcao.diminuirVolume();
-            if (contador == 0) {
+            if (volumeCount == 0) {
                 btnDiminuir.setEnabled(false);
             }
-            if (contador == 4) {
+            if (volumeCount == 19) {
                 btnAumentar.setEnabled(true);
             }
         }
     }
+
+
 }

@@ -60,12 +60,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lvMusicas"
-        android:layout_below="@+id/txtTocando"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/btnParar"
         android:background="@drawable/lista_fundo"
-        android:layout_marginTop="5dp"/>
+        android:layout_above="@+id/btnParar"
+        android:layout_below="@+id/sbProgresso"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Volume:"
+        android:layout_below="@+id/txtTocando"
+        android:id="@+id/textVolume"
+        android:textColor="@android:color/black"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -75,4 +82,16 @@
         android:textColor="@android:color/holo_red_light"
         android:layout_below="@+id/txtMinhasMusicas"
         android:layout_toEndOf="@+id/txtView" />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sbProgresso"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textVolume"
+        android:layout_marginTop="5dp"
+        android:max="20"
+        android:progress="20"
+        />
+
 </RelativeLayout>

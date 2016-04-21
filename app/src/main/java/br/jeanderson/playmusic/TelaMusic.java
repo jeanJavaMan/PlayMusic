@@ -3,7 +3,6 @@ package br.jeanderson.playmusic;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -57,10 +56,9 @@ public class TelaMusic extends AppCompatActivity implements AdapterView.OnItemCl
         sbProgresso.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Log.i("Progresso",""+progress);
-                if(volumeCount < progress){
+                if(volumeCount > progress){
                     funcao.diminuirVolume();
-                }else if(volumeCount > progress){
+                }else if(volumeCount < progress){
                     funcao.aumentarVolume();
                 }
                 volumeCount = progress;
@@ -107,6 +105,9 @@ public class TelaMusic extends AppCompatActivity implements AdapterView.OnItemCl
             String nomeDamusica = ((ArrayAdapter<String>) parent.getAdapter()).getItem(position);
             this.funcao.enviarMusica(nomeDamusica);
             this.txtTocando.setText(nomeDamusica);
+            sbProgresso.setProgress(20);
+            volumeCount = 20;
+            btnAumentar.setEnabled(false);
             if (!btnParar.isEnabled()) {
                 btnParar.setEnabled(true);
                 btnDiminuir.setEnabled(true);
